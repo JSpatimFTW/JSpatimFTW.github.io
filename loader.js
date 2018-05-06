@@ -73,7 +73,12 @@ function loadHome () {
         var childData = childSnapshot.val();
         if(childData.userid === localStorage.getItem("ID")) {       
           soldeValue.textContent = childData.solde;
+          localStorage.setItem("solde", childData.solde);
+          let imgToken = document.createElement("img");
+          imgToken.src = "images/Token_SWAM.png";
+          imgToken.style.width = "50px";
           main.appendChild(soldeValue);
+          main.appendChild(imgToken);
         }
       });
   });
@@ -95,10 +100,17 @@ function loadReceive() {
   inputAmount.id = "amountPrice";
   main.appendChild(inputAmount);
   let generateCode = document.createElement("button");
-  generateCode.textContent = "Generate";
+  generateCode.textContent = "Générer";
+  generateCode.id ="generateButton";
+  generateCode.className ="mdl-button mdl-js-button mdl-button--raised mdl-button--colored";
   main.appendChild(generateCode);
   generateCode.addEventListener("click", function() {
-    makeCode();
+    if (parseInt(inputAmount.value) <= parseInt(localStorage.getItem("solde")) )
+      makeCode();
+    else {
+      alert("montant trop élevé");
+      loadReceive();
+    }
   });
 
   let qrcode = document.createElement("div");
@@ -175,16 +187,17 @@ function loadValidationArea(content){
   validationArea.style.display = "block";
   let receiverSpan = document.createElement("span");
   receiverSpan.id = "receiverID";
-  receiverSpan.textContent = result[0];
+  receiverSpan.textContent = "ID du recepteur: " + result[0];
   validationArea.appendChild(receiverSpan);
-  let amount = document.createElement("span");
+  let amount = document.createElement("p");
   amount.id = "amountSpan";
-  amount.textContent = result[1];
+  amount.textContent = "Montant de la transaction: " + result[1];
   validationArea.appendChild(amount);
 
   let validateButton = document.createElement("button");
   validateButton.className="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored";
   validateButton.innerHTML = '<i class="material-icons">checked_icon</i>';
+  validateButton.id = "validateButton";
   validationArea.appendChild(validateButton);
   validateButton.addEventListener("click",function() {
     transaction(result[0],localStorage.getItem("ID"),result[1]);
@@ -192,6 +205,7 @@ function loadValidationArea(content){
   let cancelButton = document.createElement("button");
   cancelButton.className="mdl-button mdl-js-button mdl-button--fab mdl-js-ripple-effect mdl-button--colored";
   cancelButton.innerHTML = '<i class="material-icons">cancel_icon</i>';
+  cancelButton.id= "cancelButton";
   validationArea.appendChild(cancelButton);
   cancelButton.addEventListener("click",function() {
     validationArea.innerHTML="";
@@ -245,14 +259,14 @@ function transaction(receiverID, senderID, amount){
         let actualKey = childSnapshot.key;
         if(childData.userid === receiverID) {
           let receiverData = {
-            solde: childData.solde + amount,
+            solde: parseInt(childData.solde) + parseInt(amount),
             userid: receiverID
           };
           updates['/users/' + actualKey] = receiverData; 
         }
         if(childData.userid === senderID) {
           let senderData = {
-            solde: childData.solde - amount,
+            solde: parseInt(childData.solde) - parseInt(amount),
             userid: senderID
           };
           updates['/users/' + actualKey] = senderData; 

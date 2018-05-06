@@ -13,11 +13,18 @@ main {
   height: 100%;
 }
 
-.demo-avatar {
-  width: 60px;
-  height: 60px;
-  border-radius: 24px;
+.mainLogo {
+  height: 50px;
   margin: auto;
+  display: block;
+}
+
+
+
+.demo-avatar {
+  width: 80px;
+  height: 80px;
+  border-radius: 24px;
 }
 .demo-layout .mdl-layout__header .mdl-layout__drawer-button {
   color: rgba(0, 0, 0, 0.54);
@@ -228,7 +235,15 @@ _:-ms-input-placeholder, :root .demo-graph {
   margin: 50px;
 }
 
+#generateButton {
+  margin-top:35px;
+}
+
 .mainTitle {
   text-align: center;
   font-size: 1em;
+}
+
+.mdl-layout__header-row, .mdl-layout__drawer-button {
+ background-color: #37474F !important;
 }
