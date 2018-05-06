@@ -227,3 +227,8 @@ _:-ms-input-placeholder, :root .demo-graph {
 #qrcode {
   margin: 50px;
 }
+
+.mainTitle {
+  text-align: center;
+  font-size: 1em;
+}

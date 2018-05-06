@@ -13,14 +13,14 @@ document.querySelector("#resetAccount").addEventListener("click",function() {
   localStorage.clear();
   load();
 });
+
 function load() {
   //Generation d'ID
   if(localStorage.getItem("ID") == null) {
     localStorage.setItem("ID", guid());
-    localStorage.setItem("euro", 100);
     let userData = {
       userid: localStorage.getItem("ID"),
-      solde: localStorage.getItem("euro")
+      solde: 100
     };
   
     let newUserKey = firebase.database().ref().child('userID').push().key; 
@@ -30,7 +30,7 @@ function load() {
     console.log("nouveau user");
   }
 
-  let homeMenu = document.querySelector("#home");
+  let homeMenu = document.querySelector("#homeMenu");
   homeMenu.addEventListener("click",function(){
     loadHome();
     document.querySelector(".demo-drawer").classList.remove("is-visible");
@@ -49,23 +49,26 @@ function load() {
     document.querySelector(".demo-drawer").classList.remove("is-visible");
     document.querySelector(".mdl-layout__obfuscator").classList.remove("is-visible");
   });
+
+  let userIDMenu = document.querySelector("#userIDMenu");
+  userIDMenu.textContent = "Bonjour, user : " + localStorage.getItem("ID");
   loadHome ();
-  
 }
 
 function loadHome () {
   clear();
   let main = document.querySelector("main");
-  let title = document.createElement("h2");
-  title.id ="homeTitle";
-  title.textContent = "Votre solde actuel de Campos: ";
-  main.appendChild(title);
+  let homeTitle = document.createElement("h2");
+  homeTitle.id ="homeTitle";
+  homeTitle.classList.add("mainTitle");
+  homeTitle.textContent = "Votre solde actuel de SWAM: ";
+  main.appendChild(homeTitle);
 
   let soldeValue = document.createElement("h3");
   soldeValue.id ="soldeValue";
 
   var usersRef = firebase.database().ref('users');
-  usersRef.on('value', function(snapshot) {
+  usersRef.once('value', function(snapshot) {
       snapshot.forEach(function(childSnapshot) {
         var childData = childSnapshot.val();
         if(childData.userid === localStorage.getItem("ID")) {       
@@ -80,7 +83,8 @@ function loadReceive() {
   clear();
   let main = document.querySelector("main");
   let userID = document.createElement("h2");
-  userID.id = "userID";
+  userID.id = "userIDTitle";
+  userID.classList.add("mainTitle");
   userID.textContent = "Mon identifiant: " + localStorage.getItem("ID");
   main.appendChild(userID);
 
@@ -104,12 +108,13 @@ function loadReceive() {
 
   
   function makeCode () {
-    let qrcode = new QRCode(document.querySelector("#qrcode"), {
-      width : 100,
-      height : 100
+    let qrcodeItem = document.querySelector("#qrcode");
+    qrcodeItem.innerHTML ="";
+    let qrcode = new QRCode(qrcodeItem, {
+      width : 200,
+      height : 200
     });
     let inputAmount = document.querySelector("#amountPrice");
-    
     if (!inputAmount.value) {
       alert("Input an amount");
       inputAmount.focus();
@@ -123,7 +128,8 @@ function loadSend() {
   clear();
   let main = document.querySelector("main");
   let title = document.createElement("h2");
-  title.textContent = "Scan the receiver transaction QRCode";
+  title.textContent = "Scanner le QRCode de paiement";
+  title.classList.add("mainTitle");
   main.appendChild(title);
   let changeButtonArea = document.createElement("div");
   changeButtonArea.id = "changeButtonArea";
@@ -226,7 +232,7 @@ function guid() {
       .toString(16)
       .substring(1);
   }
-  return s4() + s4() + '-' + s4() + '-' + s4() + '-' + s4() + '-' + s4() + s4() + s4();
+  return s4() + s4() + '-' + s4() + '-' + s4();
 }
 
 
