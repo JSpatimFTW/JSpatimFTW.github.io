@@ -213,7 +213,7 @@ function InstaScan () {
         scanner.start(cameras[1]);
         break;
       default:
-        console.error('No cameras found.');
+        alert('No cameras found.');
     }
   }).catch(function (e) {
     console.error(e);
