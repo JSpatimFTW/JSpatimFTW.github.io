@@ -207,19 +207,10 @@ function InstaScan () {
     
     switch(cameras.length) {
       case 1:
-        localStorage.setItem("camSelected","0");
-        scanner.start(cameras[localStorage.getItem("camSelected")]);
+        scanner.start(cameras[0]);
         break;
       case 2:
-        localStorage.setItem("camSelected","1");
-        document.querySelector("#changeButtonArea").style.display ="block";
-        let element = document.querySelector("#switchCam");  
-        element.addEventListener("click", function () {
-          localStorage.setItem("camSelected",
-            (localStorage.getItem("camSelected") == "0") ? "1" :"0");
-          scanner.start(cameras[localStorage.getItem("camSelected")]);
-        });
-        scanner.start(cameras[localStorage.getItem("camSelected")]);
+        scanner.start(cameras[1]);
         break;
       default:
         console.error('No cameras found.');
