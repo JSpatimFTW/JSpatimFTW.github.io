@@ -260,7 +260,7 @@ function transaction(receiverID, senderID, amount){
           updates['/users/' + actualKey] = receiverData; 
         }
         if(childData.userid === senderID) {
-          if(parseInt(childData.solde)> amount)
+          if(parseInt(childData.solde)> parseInt(amount))
           {
             alert("solde insuffisant");
             return loadHome();
