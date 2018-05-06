@@ -105,12 +105,7 @@ function loadReceive() {
   generateCode.className ="mdl-button mdl-js-button mdl-button--raised mdl-button--colored";
   main.appendChild(generateCode);
   generateCode.addEventListener("click", function() {
-    if (parseInt(inputAmount.value) <= parseInt(localStorage.getItem("solde")) )
       makeCode();
-    else {
-      alert("montant trop élevé");
-      loadReceive();
-    }
   });
 
   let qrcode = document.createElement("div");
@@ -265,6 +260,11 @@ function transaction(receiverID, senderID, amount){
           updates['/users/' + actualKey] = receiverData; 
         }
         if(childData.userid === senderID) {
+          if(parseInt(childData.solde)> amount)
+          {
+            alert("solde insuffisant");
+            return loadHome();
+          }
           let senderData = {
             solde: parseInt(childData.solde) - parseInt(amount),
             userid: senderID
