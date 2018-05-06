@@ -51,7 +51,7 @@ function load() {
   });
 
   let userIDMenu = document.querySelector("#userIDMenu");
-  userIDMenu.textContent = "Bonjour, user : " + localStorage.getItem("ID");
+  userIDMenu.textContent = "Bonjour, user : " + localStorage.getItem("ID").substring(0,5);
   loadHome ();
 }
 
@@ -246,7 +246,7 @@ function guid() {
       .toString(16)
       .substring(1);
   }
-  return s4() + s4() + '-' + s4() + '-' + s4();
+  return s4() + s4() + '-' + s4();
 }
 
 
